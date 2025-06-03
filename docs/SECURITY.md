@@ -2,7 +2,7 @@
 
 ## 🔒 Confidential Information Protection
 
-This repository contains job hunting automation tools that may handle sensitive personal and professional information. Follow these guidelines to protect your data.
+This repository contains data processing automation tools that may handle sensitive personal and professional information. Follow these guidelines to protect your data.
 
 ## ⚠️ NEVER COMMIT THESE FILES
 
@@ -15,7 +15,7 @@ This repository contains job hunting automation tools that may handle sensitive 
 - `resume.pdf` / `resume.docx` - Your personal resume
 - `cv.pdf` / `cv.docx` - Your curriculum vitae
 - Personal contact information files
-- Job application tracking data
+- Personal data tracking files
 
 ### 🗂️ Spreadsheet Information
 - Google Spreadsheet IDs
@@ -150,8 +150,8 @@ If you're unsure whether something is safe to commit:
 
 ## 🎯 Remember
 
-**The goal is to share the automation tools while keeping your personal job hunting data private and secure.**
+**The goal is to share the automation tools while keeping your personal data private and secure.**
 
 ---
 
-**Stay secure and happy job hunting!** 🔒🚀
+**Stay secure and happy data processing!** 🔒🚀

@@ -78,11 +78,11 @@ ats_enrichment:
 
     Return ONLY the JSON object, nothing else.
 
-# Texas-Focused Job filtering configuration
+# Texas-Focused Data filtering configuration
 job_filter:
   # Source and destination worksheets
-  source_worksheet: "StageData"           # Source worksheet containing all job entries from ETL
-  output_worksheet: "TexasJobs"           # Texas-focused filtered job entries
+  source_worksheet: "StageData"           # Source worksheet containing all data entries from ETL
+  output_worksheet: "TexasData"           # Texas-focused filtered data entries
 
   # Data loading mode: "append" or "overwrite"
   loading_mode: "append"                  # "append" = add to existing data, "overwrite" = replace all data

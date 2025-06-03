@@ -1,5 +1,5 @@
-# US-Wide Job Configuration
-# This config targets jobs across the entire United States
+# US-Wide Data Configuration
+# This config targets data sources across the entire United States
 
 # Environment settings
 environment: "development"

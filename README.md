@@ -1,17 +1,17 @@
-# RSS Feed ETL + Job Filtering System
+# RSS Feed ETL + Data Processing System
 
-A comprehensive data pipeline for extracting job postings from RSS feeds, storing them with SCD1 data management, and filtering them for targeted job hunting.
+A comprehensive data pipeline for extracting content from RSS feeds, storing them with SCD1 data management, and applying intelligent filtering and processing.
 
 ## 🚀 Quick Start
 
 ```bash
-# Run both Texas and US job pipelines
+# Run both regional data pipelines
 python3 run_job_pipelines.py both
 
-# Run only Texas jobs
+# Run only Texas region data
 python3 run_job_pipelines.py texas
 
-# Run only US jobs
+# Run only US-wide data
 python3 run_job_pipelines.py us
 ```
 
@@ -20,15 +20,15 @@ python3 run_job_pipelines.py us
 ```
 rss_feed_etl/
 ├── 📄 Main Scripts
-│   ├── run_job_pipelines.py      # Main script - runs complete job pipelines
+│   ├── run_job_pipelines.py      # Main script - runs complete data pipelines
 │   ├── run_etl.py                # RSS feed extraction and loading
-│   ├── run_job_filter.py         # Job filtering and cleaning
-│   └── run_ats_enrichment.py     # AI-powered job matching
+│   ├── run_job_filter.py         # Data filtering and processing
+│   └── run_ats_enrichment.py     # AI-powered content analysis
 │
 ├── ⚙️ Configuration
 │   ├── config/
-│   │   ├── config.yaml           # Texas job configuration
-│   │   └── config_us.yaml        # US job configuration
+│   │   ├── config.yaml           # Texas region configuration
+│   │   └── config_us.yaml        # US region configuration
 │   └── secrets/
 │       └── service_account.json  # Google Sheets credentials
 │
@@ -60,23 +60,23 @@ rss_feed_etl/
 
 ## 🎯 Core Features
 
-- **🔄 SCD1 Data Management** - Never lose job data, automatic deduplication
-- **🌍 Multi-Region Support** - Separate Texas and US job pipelines
-- **🎯 Smart Filtering** - Remove managers, contractors, empty descriptions
-- **🤖 AI Job Matching** - ATS enrichment with match scores
+- **🔄 SCD1 Data Management** - Never lose data, automatic deduplication
+- **🌍 Multi-Region Support** - Separate Texas and US data pipelines
+- **🎯 Smart Filtering** - Remove unwanted content, empty descriptions
+- **🤖 AI Content Analysis** - Intelligent content enrichment and scoring
 - **📊 Google Sheets Integration** - Direct data loading and management
 - **⏰ Timestamp Tracking** - AS_OF_DT for audit trails
 
 ## 📊 Data Flow
 
-### Texas Job Pipeline
+### Texas Region Pipeline
 ```
-JobFeedsConfig → ETL → StageData → Filter → TexasJobs
+FeedsConfig → ETL → StageData → Filter → ProcessedData
 ```
 
-### US Job Pipeline
+### US Region Pipeline
 ```
-USJobFeedsConfig → ETL → StageData_US → Filter → USJobs
+USFeedsConfig → ETL → StageData_US → Filter → ProcessedData_US
 ```
 
 ## 🛠️ Setup
@@ -91,8 +91,8 @@ USJobFeedsConfig → ETL → StageData_US → Filter → USJobs
    - Set `GOOGLE_SPREADSHEET_ID` environment variable
 
 3. **Create RSS feed configs:**
-   - `JobFeedsConfig` sheet for Texas jobs
-   - `USJobFeedsConfig` sheet for US jobs
+   - `FeedsConfig` sheet for Texas region data
+   - `USFeedsConfig` sheet for US region data
 
 4. **Test the system:**
    ```bash
@@ -109,16 +109,16 @@ USJobFeedsConfig → ETL → StageData_US → Filter → USJobs
 ## 🎯 Common Commands
 
 ```bash
-# Daily job hunting routine
+# Daily data processing routine
 python3 run_job_pipelines.py both
 
-# Get last 3 days of jobs only
+# Get last 3 days of data only
 python3 run_job_pipelines.py both --days-back 3
 
-# Overwrite existing filtered data
+# Overwrite existing processed data
 python3 run_job_pipelines.py both --loading-mode overwrite
 
-# Run AI job matching
+# Run AI content analysis
 python3 run_ats_enrichment.py
 
 # Test without changes
@@ -136,10 +136,10 @@ Edit `config/config.yaml` and `config/config_us.yaml` to customize:
 ## 📈 Output
 
 The system creates these Google Sheets worksheets:
-- **StageData** / **StageData_US** - Raw job data
-- **TexasJobs** / **USJobs** - Filtered job opportunities
-- **Enriched data** - AI-matched jobs with scores
+- **StageData** / **StageData_US** - Raw RSS feed data
+- **ProcessedData** / **ProcessedData_US** - Filtered and processed content
+- **Enriched data** - AI-analyzed content with scores
 
 ---
 
-**Happy Job Hunting!** 🚀
+**Happy Data Processing!** 🚀

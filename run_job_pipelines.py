@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Run Texas and US job processing as two completely separate jobs.
+Run Texas and US data processing as two completely separate pipelines.
 
-This script treats Texas and US job filtering as independent processes:
-- Texas Job: JobFeedsConfig → StageData → TexasJobs
-- US Job: USJobFeedsConfig → StageData_US → USJobs
+This script treats Texas and US data processing as independent processes:
+- Texas Pipeline: FeedsConfig → StageData → ProcessedData
+- US Pipeline: USFeedsConfig → StageData_US → ProcessedData_US
 """
 
 import subprocess
