@@ -1,0 +1,157 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+
+# Distribution / packaging
+.Python
+env/
+venv/
+myenv/
+build/
+dist/
+eggs/
+*.egg-info/
+.tox/
+.coverage
+.hypothesis/
+.pytest_cache/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# ========================================
+# CONFIDENTIAL INFORMATION - DO NOT COMMIT
+# ========================================
+
+# Google Sheets & API Credentials
+secrets/
+secrets/*
+service_account.json
+*service_account*.json
+credentials.json
+*credentials*.json
+token.json
+*token*.json
+
+# Environment Variables & Configuration
+.env
+.env.*
+config/.env*
+*.env
+config.local.yaml
+config.production.yaml
+*local.yaml
+*production.yaml
+
+# Spreadsheet IDs and Sheet Names
+*spreadsheet_id*
+*sheet_id*
+spreadsheet_config.json
+sheets_config.json
+
+# Personal Data Files
+resume.pdf
+resume.docx
+resume.*
+cv.pdf
+cv.docx
+cv.*
+personal_info.json
+contact_info.json
+skills.json
+
+# API Keys and Tokens
+*api_key*
+*token*
+*secret*
+*password*
+*auth*
+openai_key.txt
+api_keys.json
+tokens.json
+
+# Database and Connection Strings
+*.db
+*.sqlite
+*.sqlite3
+database.json
+db_config.json
+connection_strings.json
+
+# Logs and Temporary Files
+logs/
+logs/*.log
+*.log
+temp/
+tmp/
+cache/
+.cache/
+
+# Data Files (potentially containing personal info)
+data/
+data/*.csv
+data/*.json
+data/*.xlsx
+data/*.pdf
+data/*.docx
+output/
+exports/
+downloads/
+
+# Backup Files
+*.bak
+*.backup
+*_backup.*
+backup_*
+
+# Test Data with Real Information
+test_data_real.json
+real_*.json
+production_*.json
+
+# Personal Notes and Documentation
+personal_notes.md
+private_notes.md
+todo_personal.md
+job_applications.md
+interview_notes.md
+
+# IDE and Editor Specific
+.vscode/settings.json
+.idea/workspace.xml
+*.sublime-workspace
+*.sublime-project
+
+# Mac specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux specific
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.temporary/
+# Force ignore sensitive files
+resume.pdf
+skills.json
+secrets/
+secrets/*
+secrets/service_account.json

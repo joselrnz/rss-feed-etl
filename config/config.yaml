@@ -1,0 +1,172 @@
+# RSS Feed ETL Configuration
+etl:
+  # Data loading strategy: "scd1", "scd2", or "merge_upsert"
+  # scd1: Simple overwrite (most efficient, no history)
+  # scd2: Full history tracking with effective dates
+  # merge_upsert: Legacy approach (similar to scd1)
+  loading_strategy: "scd1"
+
+  # Legacy setting for backward compatibility
+  use_scd2: false
+
+  # Google Sheets configuration
+  config_sheet: "JobFeedsConfig"
+
+  # Target worksheet - if specified, all feeds will load to this worksheet instead of individual ones
+  target_worksheet: "StageData"
+
+  # Timezone for date/time conversion
+  timezone: "US/Central"
+
+  # Columns to include in the output
+  columns:
+    - job_title
+    - link
+    - entry_title
+    - published
+    - feed_title
+    - reader
+    - time_window
+    - summary
+    - notes
+
+# ATS Enrichment Configuration
+ats_enrichment:
+  # Google Sheets configuration
+  worksheet_name: "RawJobsPerHour"       # Source worksheet containing job entries
+  enriched_suffix: "_Enriched"           # Suffix for the enriched worksheet name
+
+  # Resume configuration
+  resume_path: "resume.pdf"              # Path to your resume file
+
+  # Time window configuration
+  hours_lookback: 24                     # Number of hours to look back for recent job entries
+
+  # OpenRouter API configuration
+  api_url: "https://openrouter.ai/api/v1/chat/completions"
+  model:    "meta-llama/llama-3.1-405b:free"          # Model to use for AI analysis
+  max_retries: 3                         # Number of retries for API calls
+  retry_delay: 2                         # Delay between retries in seconds
+  batch_size: 3                        # Maximum number of job descriptions per batch
+  use_batch: true                        # Whether to use batch processing
+
+  # Data loading configuration
+  use_scd2: false                        # Whether to use SCD2 pattern (default: false, uses merge_upsert)
+  description_column: "summary"          # Column name containing job descriptions
+  save_to_csv: yes                     # Whether to save results to CSV instead of Google Sheets
+  output_csv: "ats_results.csv"          # Output CSV file name
+
+  # Skills extraction configuration
+  use_ai_for_percentage: true            # Whether to use AI for calculating match percentage (spaCy is always used for skills)
+  spacy_model: "en_core_web_sm"          # spaCy model to use for skills extraction
+  skills_file: "skills.json"             # Path to JSON file containing skills list (optional)
+  percentage_only: false                # Whether to only calculate match percentage and ignore skills extraction
+
+  # Prompt configuration
+  system_prompt: "You are an ATS (Applicant Tracking System) expert. Analyze the resume and job description for matching skills, experience, and qualifications."
+  user_prompt: |
+    Resume:
+    {resume_text}
+
+    Job Description:
+    {job_description}
+
+    Analyze the match between this resume and job description as an ATS would. Return a JSON object with the following fields:
+    1. match_percentage: A number between 0-100 representing the overall match
+    2. missing_skills: An array of skills mentioned in the job description that are not found in the resume
+    3. matched_skills: An array of skills that are found in both the resume and job description
+
+    Return ONLY the JSON object, nothing else.
+
+# Texas-Focused Job filtering configuration
+job_filter:
+  # Source and destination worksheets
+  source_worksheet: "StageData"           # Source worksheet containing all job entries from ETL
+  output_worksheet: "TexasJobs"           # Texas-focused filtered job entries
+
+  # Data loading mode: "append" or "overwrite"
+  loading_mode: "append"                  # "append" = add to existing data, "overwrite" = replace all data
+
+  # Add AS_OF_DT timestamp column with ETL run time
+  add_as_of_dt: true                      # Set to false to disable AS_OF_DT column
+
+  # Date filtering options
+  date_filter:
+    enabled: true                         # Enable filtering by published date
+    column: "published"                   # Column containing the published date
+    days_back: 7                          # Number of days back to include (0 = all data)
+
+  # Filtering mode: "exclude" (default) - removes jobs matching exclude keywords
+  filter_mode: "exclude"
+
+  # Case sensitivity for keyword matching (default: false)
+  case_sensitive: false                    # Set to true for case-sensitive matching
+
+  # Filter out records with empty or missing content
+  require_content:
+    enabled: true                          # Enable filtering of empty content
+    columns:                               # Columns that must have content
+      - "summary"                          # Job description/summary must not be empty
+      # - "entry_title"                    # Uncomment to require job title
+      # - "published"                      # Uncomment to require published date
+
+  # Column-specific exclude keywords
+  # Format: Each column has its own list of keywords to exclude
+  exclude_by_column:
+    # Keywords to exclude in the feed_title column
+    feed_title:
+      - "Director"
+      - "Manager"
+      - "Head of"
+      - "Chief"
+
+    # Keywords to exclude in the entry_title column
+    entry_title:
+      - "Director"
+      - "Manager"
+      - "Head of"
+      - "Chief"
+      - "10+ years"
+      - "15+ years"
+      - "Jobot"
+      - "lensa"
+      - "Dice"
+      - "CyberCoders"
+      - "Teksystems"
+      - "staff"
+      - "Principal"
+      - "Staff"
+      - "Contract"
+      - "NVIDIA"
+      - "Lead"
+      - "Help Desk"
+      - "Specialist"
+      - "Canonical"
+      - "Sales"
+      - "Manager"
+      - "NTT"
+      - "Splunk"
+      - "User Agreement"
+      - "Recruiter"
+      - "Producer"
+      - "Business"
+      - "Nurse"
+      - "Account"
+      - "Executive"
+      - "Tax"
+      - "Get the"
+      - "Privacy Policy"
+      - "LinkedIn Login, Sign in"
+      - "Sign Up"
+      - "Jerry"
+      - "Cookie Policy"
+      - "W3Global"
+      - "User Agreement"
+    # Keywords to exclude in the summary column
+    summary:
+      - "10+ years"
+      - "15+ years"
+      - "lensa"
+      - "Dice"
+      - "CyberCoders"
+      - "Teksystems"

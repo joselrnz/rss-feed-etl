@@ -1,0 +1,68 @@
+# Relaxed Filtering Configuration
+# This config allows more job types for broader results
+
+# Environment settings
+environment: "development"
+
+# Google Sheets configuration
+google_sheets:
+  spreadsheet_id: ""  # Set via environment variable
+
+# ETL configuration
+etl:
+  loading_strategy: "scd1"
+  target_worksheet: "StageData"
+  config_sheet: "JobFeedsConfig"
+  timezone: "US/Central"
+  
+  columns:
+    - job_title
+    - link
+    - entry_title
+    - published
+    - feed_title
+    - reader
+    - time_window
+    - summary
+    - notes
+  
+  primary_key: "link"
+
+# Relaxed Job filtering configuration
+job_filter:
+  source_worksheet: "StageData"
+  output_worksheet: "TexasJobs_Relaxed"       # Different output sheet
+  loading_mode: "append"
+  add_as_of_dt: true
+  
+  date_filter:
+    enabled: true
+    column: "published"
+    days_back: 14                             # Last 2 weeks (more data)
+    
+  filter_mode: "exclude"
+  case_sensitive: false
+
+  # Only require description
+  require_content:
+    enabled: true
+    columns:
+      - "summary"                             # Only require description
+      
+  # Minimal keyword exclusions (only obvious spam/irrelevant)
+  exclude_by_column:
+    entry_title:
+      - "Jobot"                               # Recruiting spam
+      - "lensa"                               # Job board spam
+      - "Dice"                                # Job board spam
+      - "CyberCoders"                         # Recruiting spam
+      - "LinkedIn Login"                      # Site errors
+      - "Sign Up"                             # Site errors
+      - "User Agreement"                      # Site errors
+      - "Nurse"                               # Completely different field
+      - "Tax"                                 # Different field (unless you want tax tech jobs)
+      
+    summary:
+      - "lensa"                               # Job board spam
+      - "Dice"                                # Job board spam
+      - "CyberCoders"                         # Recruiting spam

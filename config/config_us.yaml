@@ -1,0 +1,138 @@
+# US-Wide Job Configuration
+# This config targets jobs across the entire United States
+
+# Environment settings
+environment: "development"
+
+# Google Sheets configuration
+google_sheets:
+  spreadsheet_id: ""  # Set via environment variable
+
+# ETL configuration for US-wide jobs
+etl:
+  loading_strategy: "scd1"
+  target_worksheet: "StageData_US"          # Separate staging area for US jobs
+  config_sheet: "USJobFeedsConfig"          # Separate config sheet for US feeds
+  timezone: "US/Central"
+  
+  columns:
+    - job_title
+    - link
+    - entry_title
+    - published
+    - feed_title
+    - reader
+    - time_window
+    - summary
+    - notes
+  
+  primary_key: "link"
+
+# US-Wide Job filtering configuration
+job_filter:
+  source_worksheet: "StageData_US"            # Read from US-specific staging area
+  output_worksheet: "USJobs"                  # US-wide jobs output
+  loading_mode: "append"
+  add_as_of_dt: true
+  
+  date_filter:
+    enabled: true
+    column: "published"
+    days_back: 7                              # Last week of jobs
+    
+  filter_mode: "exclude"
+  case_sensitive: false
+
+  # Filter out records with empty content
+  require_content:
+    enabled: true
+    columns:
+      - "summary"                             # Job description must not be empty
+      
+  # Column-specific exclude keywords (US-focused)
+  exclude_by_column:
+    # Keywords to exclude in the feed_title column
+    feed_title:
+      - "Director"
+      - "Manager"
+      - "Head of"
+      - "Chief"
+
+    # Keywords to exclude in the entry_title column
+    entry_title:
+      - "Director"
+      - "Manager"
+      - "Head of"
+      - "Chief"
+      - "10+ years"
+      - "15+ years"
+      - "Jobot"
+      - "lensa"
+      - "Dice"
+      - "CyberCoders"
+      - "Teksystems"
+      - "staff"
+      - "Principal"
+      - "Staff"
+      - "Contract"
+      - "NVIDIA"
+      - "Lead"
+      - "Help Desk"
+      - "Specialist"
+      - "Canonical"
+      - "Sales"
+      - "Manager"
+      - "NTT"
+      - "Splunk"
+      - "User Agreement"
+      - "Recruiter"
+      - "Producer"
+      - "Business"
+      - "Nurse"
+      - "Account"
+      - "Executive"
+      - "Tax"
+      - "LinkedIn Login, Sign in"
+      - "Sign Up"
+      - "Jerry"
+      - "W3Global"
+      - "User Agreement"
+      
+    # Keywords to exclude in the summary column
+    summary:
+      - "10+ years"
+      - "15+ years"
+      - "lensa"
+      - "Dice"
+      - "CyberCoders"
+      - "Teksystems"
+
+# ATS enrichment configuration (same as TX config)
+ats_enrichment:
+  enabled: true
+  model: "gpt-4o-mini"
+  max_tokens: 150
+  temperature: 0.1
+  
+  prompt_template: |
+    You are an expert career advisor analyzing job postings for relevance to a candidate's profile.
+    
+    Candidate Profile:
+    - 10+ years experience in Data Engineering, Cloud Architecture, and DevOps
+    - Expert in: Python, SQL, AWS, Azure, Kubernetes, Docker, Terraform, Apache Spark, Kafka
+    - Strong background in: ETL/ELT pipelines, Data Warehousing, MLOps, CI/CD
+    - Seeking: Senior Data Engineer, Cloud Engineer, or DevOps Engineer roles
+    - Preference: Remote or hybrid positions, competitive salary
+    
+    Job Posting:
+    Title: {entry_title}
+    Company: {company}
+    Description: {summary}
+    
+    Analyze this job posting and provide:
+    1. Match Score (0-100): How well this job matches the candidate's profile
+    2. Key Strengths: What makes this a good match (2-3 points)
+    3. Potential Concerns: Any red flags or mismatches (1-2 points)
+    4. Recommendation: Apply/Consider/Skip with brief reason
+    
+    Return ONLY the JSON object, nothing else.

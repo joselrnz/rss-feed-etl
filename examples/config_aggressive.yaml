@@ -1,0 +1,127 @@
+# Aggressive Filtering Configuration
+# This config removes more job types for highly targeted results
+
+# Environment settings
+environment: "development"
+
+# Google Sheets configuration
+google_sheets:
+  spreadsheet_id: ""  # Set via environment variable
+
+# ETL configuration
+etl:
+  loading_strategy: "scd1"
+  target_worksheet: "StageData"
+  config_sheet: "JobFeedsConfig"
+  timezone: "US/Central"
+  
+  columns:
+    - job_title
+    - link
+    - entry_title
+    - published
+    - feed_title
+    - reader
+    - time_window
+    - summary
+    - notes
+  
+  primary_key: "link"
+
+# Aggressive Job filtering configuration
+job_filter:
+  source_worksheet: "StageData"
+  output_worksheet: "TexasJobs_Aggressive"    # Different output sheet
+  loading_mode: "append"
+  add_as_of_dt: true
+  
+  date_filter:
+    enabled: true
+    column: "published"
+    days_back: 3                              # Only last 3 days (more recent)
+    
+  filter_mode: "exclude"
+  case_sensitive: false
+
+  # Require content in multiple columns
+  require_content:
+    enabled: true
+    columns:
+      - "summary"                             # Must have description
+      - "entry_title"                         # Must have job title
+      
+  # More aggressive keyword exclusions
+  exclude_by_column:
+    feed_title:
+      - "Director"
+      - "Manager"
+      - "Head of"
+      - "Chief"
+      - "VP"
+      - "Vice President"
+      
+    entry_title:
+      - "Director"
+      - "Manager" 
+      - "Head of"
+      - "Chief"
+      - "VP"
+      - "Vice President"
+      - "10+ years"
+      - "15+ years"
+      - "20+ years"
+      - "Jobot"
+      - "lensa"
+      - "Dice"
+      - "CyberCoders"
+      - "Teksystems"
+      - "staff"
+      - "Principal"
+      - "Staff"
+      - "Contract"
+      - "Contractor"
+      - "Consulting"
+      - "Consultant"
+      - "NVIDIA"
+      - "Lead"
+      - "Help Desk"
+      - "Specialist"
+      - "Canonical"
+      - "Sales"
+      - "NTT"
+      - "Splunk"
+      - "Recruiter"
+      - "Producer"
+      - "Business"
+      - "Nurse"
+      - "Account"
+      - "Executive"
+      - "Tax"
+      - "LinkedIn Login"
+      - "Sign Up"
+      - "Jerry"
+      - "W3Global"
+      - "Intern"
+      - "Internship"
+      - "Part-time"
+      - "Part time"
+      - "Temporary"
+      - "Temp"
+      - "Freelance"
+      - "Remote"                              # Exclude remote if you want local only
+      - "Onsite"                              # Exclude onsite if you want remote only
+      
+    summary:
+      - "10+ years"
+      - "15+ years"
+      - "20+ years"
+      - "lensa"
+      - "Dice"
+      - "CyberCoders"
+      - "Teksystems"
+      - "PhD required"
+      - "PhD preferred"
+      - "Master's required"
+      - "clearance required"
+      - "security clearance"
+      - "Top Secret"

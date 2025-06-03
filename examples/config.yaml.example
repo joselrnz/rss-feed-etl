@@ -1,0 +1,38 @@
+# RSS Feed ETL Configuration
+etl:
+  # Whether to use SCD2 pattern (default: false, uses merge_upsert)
+  use_scd2: false
+
+  # Google Sheets configuration
+  # Note: spreadsheet_id should be set in .env file
+  config_sheet: "FeedConfig"
+
+  # Timezone for date/time conversion
+  timezone: "US/Central"
+
+  # Columns to include in the output
+  columns:
+    - job_title
+    - link
+    - entry_title
+    - published
+    - feed_title
+    - reader
+    - time_window
+    - summary
+    - notes
+
+# Resume Matcher Configuration (for future implementation)
+matcher:
+  # OpenRouter API configuration
+  api_url: "https://openrouter.ai/api/v1/chat/completions"
+  model: "openai/gpt-3.5-turbo"
+
+  # Batch processing configuration
+  max_descriptions_per_batch: 10
+  max_retries: 3
+  retry_delay: 2
+
+  # Output configuration
+  output_filename: "ats_results.csv"
+  job_description_column: "summary"
