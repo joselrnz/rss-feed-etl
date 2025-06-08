@@ -71,12 +71,12 @@ rss_feed_etl/
 
 ### Texas Region Pipeline
 ```
-FeedsConfig → ETL → StageData → Filter → ProcessedData
+DataFeedsConfig → ETL → StageData → Filter → TexasData
 ```
 
 ### US Region Pipeline
 ```
-USFeedsConfig → ETL → StageData_US → Filter → ProcessedData_US
+USDataFeedsConfig → ETL → StageData_US → Filter → USData
 ```
 
 ## 🛠️ Setup
@@ -91,8 +91,8 @@ USFeedsConfig → ETL → StageData_US → Filter → ProcessedData_US
    - Set `GOOGLE_SPREADSHEET_ID` environment variable
 
 3. **Create RSS feed configs:**
-   - `FeedsConfig` sheet for Texas region data
-   - `USFeedsConfig` sheet for US region data
+   - `DataFeedsConfig` sheet for Texas region data
+   - `USDataFeedsConfig` sheet for US region data
 
 4. **Test the system:**
    ```bash
@@ -137,7 +137,7 @@ Edit `config/config.yaml` and `config/config_us.yaml` to customize:
 
 The system creates these Google Sheets worksheets:
 - **StageData** / **StageData_US** - Raw RSS feed data
-- **ProcessedData** / **ProcessedData_US** - Filtered and processed content
+- **TexasData** / **USData** - Filtered and processed content
 - **Enriched data** - AI-analyzed content with scores
 
 ---

@@ -11,8 +11,8 @@ google_sheets:
 # ETL configuration for US-wide jobs
 etl:
   loading_strategy: "scd1"
-  target_worksheet: "StageData_US"          # Separate staging area for US jobs
-  config_sheet: "USJobFeedsConfig"          # Separate config sheet for US feeds
+  target_worksheet: "StageData_US"          # Separate staging area for US data
+  config_sheet: "USDataFeedsConfig"          # Separate config sheet for US feeds
   timezone: "US/Central"
   
   columns:
@@ -28,17 +28,17 @@ etl:
   
   primary_key: "link"
 
-# US-Wide Job filtering configuration
+# US-Wide Data filtering configuration
 job_filter:
   source_worksheet: "StageData_US"            # Read from US-specific staging area
-  output_worksheet: "USJobs"                  # US-wide jobs output
+  output_worksheet: "USData"                  # US-wide data output
   loading_mode: "append"
   add_as_of_dt: true
   
   date_filter:
     enabled: true
     column: "published"
-    days_back: 7                              # Last week of jobs
+    days_back: 7                              # Last week of data
     
   filter_mode: "exclude"
   case_sensitive: false
@@ -47,7 +47,7 @@ job_filter:
   require_content:
     enabled: true
     columns:
-      - "summary"                             # Job description must not be empty
+      - "summary"                             # Data description must not be empty
       
   # Column-specific exclude keywords (US-focused)
   exclude_by_column:
@@ -81,7 +81,6 @@ job_filter:
       - "Specialist"
       - "Canonical"
       - "Sales"
-      - "Manager"
       - "NTT"
       - "Splunk"
       - "User Agreement"
@@ -96,7 +95,23 @@ job_filter:
       - "Sign Up"
       - "Jerry"
       - "W3Global"
-      - "User Agreement"
+      - "Scientist"
+      - "Power BI"
+      - "Partner"
+      - "Supply Chain"
+      - "Civil"
+      - "Intern"
+      - "Representative"
+      - "Technician"
+      - "Clerance"
+      - "Field"
+      - "Counselor"
+      - "Therapist"
+      - "Consultant"
+      - "Installation"
+      - "Entry"
+      - "Realtor"
+
       
     # Keywords to exclude in the summary column
     summary:
