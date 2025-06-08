@@ -3,8 +3,8 @@
 Run Texas and US data processing as two completely separate pipelines.
 
 This script treats Texas and US data processing as independent processes:
-- Texas Pipeline: FeedsConfig → StageData → ProcessedData
-- US Pipeline: USFeedsConfig → StageData_US → ProcessedData_US
+- Texas Pipeline: DataFeedsConfig → StageData → TexasData
+- US Pipeline: USDataFeedsConfig → StageData_US → USData
 """
 
 import subprocess
@@ -67,7 +67,7 @@ def run_texas_job(args):
         etl_command = [
             "python3", "run_etl.py",
             "--loading_strategy", "scd1",
-            "--config_sheet", "JobFeedsConfig",
+            "--config_sheet", "DataFeedsConfig",
             "--config", "config/config.yaml",
             "--log-level", args.log_level
         ]
@@ -75,7 +75,7 @@ def run_texas_job(args):
         if args.dry_run:
             etl_command.append("--dry-run")
         
-        if run_command(etl_command, "Texas ETL (JobFeedsConfig → StageData)"):
+        if run_command(etl_command, "Texas ETL (DataFeedsConfig → StageData)"):
             success_count += 1
         else:
             logging.error("❌ Texas ETL failed")
@@ -99,7 +99,7 @@ def run_texas_job(args):
         if args.dry_run:
             filter_command.append("--dry-run")
         
-        if run_command(filter_command, "Texas Filtering (StageData → TexasJobs)"):
+        if run_command(filter_command, "Texas Filtering (StageData → TexasData)"):
             success_count += 1
         else:
             logging.error("❌ Texas filtering failed")
@@ -124,7 +124,7 @@ def run_us_job(args):
         etl_command = [
             "python3", "run_etl.py",
             "--loading_strategy", "scd1",
-            "--config_sheet", "USJobFeedsConfig",
+            "--config_sheet", "USDataFeedsConfig",
             "--config", "config/config_us.yaml",
             "--log-level", args.log_level
         ]
@@ -132,7 +132,7 @@ def run_us_job(args):
         if args.dry_run:
             etl_command.append("--dry-run")
         
-        if run_command(etl_command, "US ETL (USJobFeedsConfig → StageData_US)"):
+        if run_command(etl_command, "US ETL (USDataFeedsConfig → StageData_US)"):
             success_count += 1
         else:
             logging.error("❌ US ETL failed")
@@ -156,7 +156,7 @@ def run_us_job(args):
         if args.dry_run:
             filter_command.append("--dry-run")
         
-        if run_command(filter_command, "US Filtering (StageData_US → USJobs)"):
+        if run_command(filter_command, "US Filtering (StageData_US → USData)"):
             success_count += 1
         else:
             logging.error("❌ US filtering failed")
